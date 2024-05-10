@@ -1,0 +1,136 @@
+-- Mary Nelson Python Final Project -- 05/10/2024
+
+PURPOSE STATEMENT: 
+
+Develop a library management program that allows the user to record and manage books they have or want to read,
+including associated details and review information. The program will interact with an SQLite database to
+efficiently store and organize this information.
+
+NOUNS AND VERBS:
+
+	NOUNS: book, author, pages, status, review, notes, totals
+
+	VERBS: input, prompt, loop, calculate, display
+		add, remove, update, edit
+
+TESTING:
+
+Exhaustive testing to ensure data validation where input is required, input matches expected options, 
+the datatype of input is correct, database and program display and record data as expected, etc. 
+Future update considerations:
+I would have liked to add an option for the user to return to the main menu at any time, even if 
+in the middle of a function, but did not have the bandwidth at this time. I also could have added the
+option to keep existing notes or to enter a new note. Change unread/read status to a y/n for ease of use. 
+
+Problems encountered and handled:
+	add_book()
+		added datatype/not null validation for title, author, and pages before continuing to status
+	get_review()
+		added validation so review is not null if status is "read"
+	get_notes()
+		added statement to replace any existing notes with empty string if left null 		
+		during use of update_book()
+	update_book() 
+		status "read" to "unread" caused null in db, fixed so it replaced with 
+		empty string
+
+TEST PLANS:
+
+VARIABLES: name, author, pages, status, review, notes 
+
+TEST PLAN 1:
+	INPUT VALUES: 
+		Menu option: 1
+	EXPECTED RESULT: 
+		The full library is accessed from database file and displayed
+	ACTUAL RESULT: 
+		The full library is accessed from database file and displayed
+
+TEST PLAN 2:
+	INPUT VALUES:
+		Menu option: 2
+		Name: Wool Omnibus
+		Author: Hugh Howey
+		Pages: 536
+		Status: read	
+		Review: 5
+		Notes: Great!!
+	EXPECTED RESULT:
+		"Wool Omnibus has been added." (and add to the database)
+	ACTUAL RESULT:
+		"Wool Omnibus has been added." (and verified added to database)
+
+TEST PLAN 3:
+	INPUT VALUES:
+		Menu option: 3
+		Book number: 78  (there are 18 books in the library)
+		Book number: 12
+	EXPECTED RESULT:
+		"Invalid entry, please enter a number between 1 and 18."
+		"Mark Goes to School was removed." (book 18)
+	ACTUAL RESULT:
+		"Invalid entry, please enter a number between 1 and 18."
+		"Mark Goes to School was removed." (book 18)
+
+TEST PLAN 4:
+	INPUT VALUES:
+		Menu option: 4
+		Book ID: 12
+		Status: unread
+		Notes: Wanted to finish but it was too slow
+		Notes: Couldn't finish
+	EXPECTED RESULT:	
+		You selected Corky. Read Status = read, Review = 3, Notes = 
+		Note exceeds max of 15 characters. Please try again.
+		Corky was updated.
+	ACTUAL RESULT:
+		You selected Corky. Read Status = read, Review = 3, Notes = 
+		Note exceeds max of 15 characters. Please try again.
+		Corky was updated.
+		(accurately updated read to unread status, review removed, and note changed)
+
+TEST PLAN 5:
+	INPUT VALUES:
+		Menu option: 4
+		Book ID: 2
+		Status: read
+		Review: 5
+		Notes: 
+	EXPECTED RESULT:	
+		You selected Where the Lost Wander. Read Status = unread, Review =,  Notes = 
+		Where the Lost Wander was updated.
+	ACTUAL RESULT:
+		You selected Where the Lost Wander. Read Status = unread, Review =,  Notes = 
+		Where the Lost Wander was updated.
+		(accurately updated unread to read status, review added, and note left as empty string)
+
+TEST PLAN 6: 
+	INPUT VALUES:
+		Menu option: 5
+		Book ID: 1
+		Notes:
+	EXPECTED RESULT:		
+		Notes for Wool Omnibus updated.
+	ACTUAL RESULT:
+		Notes for Wool Omnibus updated.
+		(updated existing note to empty string),(also tested book with no note and adding a note)
+
+TEST PLAN 7:
+	INPUT VALUES:
+		Menu option: 6
+	EXPECTED RESULT:	
+		Bye! (program ends)
+	ACTUAL RESULT:
+		Bye! (program ends)
+
+
+RESOURCES: 
+	https://www.geeksforgeeks.org/use-yield-keyword-instead-return-keyword-python/
+	https://www.geeksforgeeks.org/python-string-strip/
+	https://www.geeksforgeeks.org/join-list-with-separator-in-python/
+		Did not end up using but code:
+			# Convert REVIEW_OPTIONS to string and join with comma
+				def show_review_options():
+    					print("Review Options:", ", ".join(map(str, REVIEW_OPTIONS)))
+	https://tutorpython.com/truncate-python-string/
+		
